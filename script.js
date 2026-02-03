@@ -106,4 +106,25 @@ function checkout() {
         return;
     }
 
-    const order = cart.map(i => `${i.name}
+    const order = cart.map(i => `${i.name} × ${i.qty} - NT$${i.price * i.qty}`).join("%0A");
+    const payment = total >= 500 ? "Cash Before Delivery(Pay to Leonardo in LTBrown)" : "Cash Only(Pay to Leonardo in LTBrown)";
+
+    window.location.href =
+        `mailto:leofoooo132@gmail.com?subject=New Order&body=Order:%0A${order}%0A%0ATotal: NT$${total}%0APayment: ${payment}`;
+}
+
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("total", total);
+}
+
+function loadCart() {
+    const savedCart = localStorage.getItem("cart");
+    const savedTotal = localStorage.getItem("total");
+    if (savedCart) cart = JSON.parse(savedCart);
+    if (savedTotal) total = parseInt(savedTotal);
+    renderCart();
+}
+
+loadCart();
+renderItems();
